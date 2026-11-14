@@ -1,78 +1,138 @@
-# CryptoSelect AI
+#  CryptoSelect AI
 
-Encrypt messages and files. A machine-learning model (Random Forest) recommends the best of three standard
-ciphers (AES-128-GCM, AES-256-GCM, ChaCha20-Poly1305) for your situation, explains why, and the app encrypts your
-data. The AI only selects; all cryptography comes from the `cryptography` library, unmodified.
+An AI-assisted cryptographic algorithm selection application that encrypts messages and files using suitable encryption algorithms.
 
-## Run it
+A Random Forest machine learning model recommends one of three cryptographic algorithms — AES-128-GCM, AES-256-GCM, or ChaCha20-Poly1305 — based on the user's situation. The application explains its recommendation and performs encryption using the Python `cryptography` library.
+
+**Note:** AI is used only for algorithm selection. The actual encryption and decryption are handled by the cryptographic library.
+
+##  Features
+
+- AI-based cryptographic algorithm recommendation.
+- Text and file encryption and decryption.
+- Supports three authenticated encryption algorithms.
+- Explanation of algorithm recommendations.
+- Encryption performance benchmarking.
+- AI accuracy evaluation and visualizations.
+- Security checks for all three algorithms.
+- Downloadable encrypted files and keys.
+
+##  Technologies Used
+
+- Python
+- Random Forest
+- Scikit-learn
+- Streamlit
+- Cryptography
+- NumPy
+- Pandas
+- Matplotlib
+- Pytest
+
+##  Application Pages
+
+| Page | Description |
+|---|---|
+| Home | Project introduction and navigation |
+| Encrypt & Decrypt | Encrypt and decrypt text or files |
+| Performance | Speed and memory benchmarking |
+| Train the AI | Model training and cost analysis |
+| Security Checks | PASS/FAIL security tests |
+| AI Accuracy | Classification metrics and model evaluation |
+| About & Limits | Project explanation and limitations |
+
+##  Installation and Setup
+
+**1. Clone the repository**
+
+```bash
+git clone <your-repository-url>
+cd <repository-folder>
+```
+
+**2. Create a virtual environment**
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate            # Mac/Linux: source .venv/bin/activate
+```
+
+**3. Activate the virtual environment**
+
+Windows:
+```bash
+.venv\Scripts\activate
+```
+
+Mac/Linux:
+```bash
+source .venv/bin/activate
+```
+
+**4. Install dependencies**
+
+```bash
 pip install -r requirements.txt
+```
+
+**5. Run the application**
+
+```bash
 streamlit run app.py
 ```
 
-The AI is trained automatically the first time you open Encrypt & Decrypt (about 15 seconds).
+The Random Forest model is trained automatically the first time you open the Encrypt & Decrypt page (approximately 15 seconds).
 
-## Pages
+##  Supported Encryption Algorithms
 
-| Page | What it shows |
-|---|---|
-| Home | What the app is and how to start |
-| Encrypt & Decrypt | Add text or a file, describe your situation, see the recommendation and reasons, encrypt, download file and key. Decrypt reads the cipher from the file header. |
-| Performance | The three speed tests from the research notebook: speed and memory table with throughput chart, median timings, local-socket transfer with modelled network delay |
-| Train the AI | Cost formula, device factors and networks, label distribution, cross-validated training |
-| Security Checks | PASS/FAIL tests for all three ciphers |
-| AI Accuracy | Classification metrics, confusion matrix, feature importance, outcome table, brand-new scenarios, cost by network, sensitivity check |
-| About & Limits | What is and is not claimed |
+- AES-128-GCM
+- AES-256-GCM
+- ChaCha20-Poly1305
 
-## Matches the research notebook
+The application recommends an algorithm based on factors such as CPU capability, AES hardware availability, battery level, payload size, security requirements, and network conditions.
 
-The scenario generator, cost formula, Random Forest settings, tables and figures follow the research notebook
-exactly. With the built-in notebook measurements, seed 42 and 4000 scenarios, the website reproduces the notebook's
-printed results (label shares, best parameters, cross-validated F1 0.9766, accuracy 0.9812, the outcome table and
-its Wilcoxon p-values, the seed-777 table, cost by network, and the sensitivity table). `pytest` checks this.
+##  Testing
 
-If you run the speed tests on your own computer and train on those measurements, the numbers will differ slightly,
-because the scenarios are built from your measured timings.
-
-Priority setting: the cost model has one adjustable weight (energy versus speed, normally set by the battery level).
-Fastest sets the energy weight to 10%, Energy-saving to 70%, Max security allows only 256-bit ciphers, and Balanced
-follows the battery slider.
-
-## Encrypted file format
-
-`"CSAI"`, version, cipher id, key mode, [16-byte scrypt salt in password mode], 12-byte nonce, ciphertext + tag.
-The whole header is passed as AEAD associated data, so changing it is detected. The original file name and type are
-stored inside the encrypted payload.
-
-## Tests
+Run the automated test suite using:
 
 ```bash
 pytest
 ```
 
-## Regenerating every table and figure for the report (optional)
+##  Optional: Regenerating Evaluation Results
 
-The website itself does not export anything for a paper. To regenerate all tables, figures and a summary file:
+The project includes a script for regenerating evaluation tables and figures.
+
+Full execution:
 
 ```bash
-python scripts/generate_evidence.py            # full run
-python scripts/generate_evidence.py --quick    # quick check
+python scripts/generate_evidence.py
 ```
 
-Files go into `results/` with the notebook's names (fig1_throughput.png, table_outcome.csv, and so on). By default
-the scenarios use the notebook's measurements so the numbers match the notebook; add `--profile local` to use the
-speed test the script has just run. You can delete the `scripts/` folder if you do not need it.
+Quick execution:
 
-## Project layout
+```bash
+python scripts/generate_evidence.py --quick
+```
 
+Generated files are stored in the `results/` directory.
+
+##  Project Structure
+
+```text
+CryptoSelectAI/
+│
+├── app.py
+├── requirements.txt
+│
+├── core/
+├── pages/
+├── tests/
+├── scripts/
+├── models/
+├── results/
+└── .streamlit/
 ```
-app.py              entry point and navigation
-pages/              one file per page
-core/               crypto, fileformat, benchmark, dataset, selectors, explain, evaluate, figures, security_tests, ui
-scripts/            optional evidence generator
-tests/              pytest suite
-models/  results/   generated at run time
-```
+
+##  Project
+
+Developed as a collaborative team project.
